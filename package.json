@@ -1,0 +1,14 @@
+{
+  "name": "validate-play",
+  "version": "1.0.0",
+  "description": "Brief coding exercise for the LA Dodgers",
+  "main": "index.js",
+  "author": "Tim Reen",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "jest": "^24.8.0"
+  }
+}
