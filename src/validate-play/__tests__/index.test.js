@@ -115,62 +115,6 @@ describe("validatePlay", () => {
     });
   });
 
-  describe("invalid situations", () => {
-    it("outs should never decrease", () => {
-      const res = validatePlay(2, [1], 1, [], 3);
-      expect(res).toBeFalsy();
-    });
-    describe("runs scored", () => {
-      it("runs scored cannot exceed initial baserunnners + 1", () => {
-        const res = validatePlay(0, [1], 0, [], 3);
-        expect(res).toBeFalsy();
-      });
-
-      it("runs scored + outs cannout exceed baserunners +1", () => {
-        const res = validatePlay(0, [1, 3], 2, [], 2);
-        expect(res).toBeFalsy();
-      });
-    });
-
-    describe("baserunner outcomes", () => {
-      describe("baserunners have decreased", () => {
-        it("runs are not scored, outs have not increased", () => {
-          const res = validatePlay(0, [1], 0, [], 0);
-          expect(res).toBeFalsy();
-        });
-
-        it("runs are not scored, outs increase by more than baserunners lost + 1(batter)", () => {
-          const res = validatePlay(0, [1, 2], 1, [], 0);
-          expect(res).toBeFalsy();
-        });
-      });
-
-      describe("baserunners have increased", () => {
-        it("no runs have scored", () => {
-          const res = validatePlay(0, [1], 0, [1, 2], 1);
-          expect(res).toBeFalsy();
-        });
-
-        it("no outs have been made", () => {
-          const res = validatePlay(0, [1], 1, [1, 2], 0);
-          expect(res).toBeFalsy();
-        });
-
-        it("cannot increase by more than the current runners + 1", () => {
-          const res = validatePlay(0, [], 0, [1, 2], 0);
-          expect(res).toBeFalsy();
-        });
-      });
-    });
-
-    describe("inning cannot end", () => {
-      it("cannot increase by more than the current runners + 1", () => {
-        const res = validatePlay(2, [1, 2], 3, [1], 1);
-        expect(res).toBeTruthy();
-      });
-    });
-  });
-
   describe("example test cases", () => {
     it("0 outs, runner on 1st -> 0 outs, runners on 1st and 3rd, 0 runs scored", () => {
       const res = validatePlay(0, [1], 0, [1, 3], 0);
