@@ -5,17 +5,38 @@ const validatePlay = (
   finalBaserunners,
   runsScored
 ) => {
-  return (
+  const validInput =
     validIntialOuts(initialOuts) &&
     validBaserunners(initialBaserunners) &&
     validBaserunners(finalBaserunners) &&
     validFinalOuts(finalOuts) &&
-    validRunsScoredPerPlay(runsScored)
-  );
+    validRunsScoredPerPlay(runsScored);
+
+  if (!validInput) return false;
+
+  const outsDiff = finalOuts - initialOuts;
+  const initPlayerStates = initialBaserunners.length + 1;
+  const resolvedPlayerStates = outsDiff + runsScored + finalBaserunners.length;
+  // outs cannot decrease
+  if (outsDiff < 0) return false;
+  // all players must be accounted for
+  if (initPlayerStates !== resolvedPlayerStates) return false;
+
+  if (
+    finalOuts === 3 &&
+    !inningCanEnd(initialOuts, initialBaserunners, runsScored)
+  )
+    return false;
+
+  return true;
 };
 
-const validRunsScoredPerPlay = runs => {
-  return typeof runs === "number" && runs >= 0 && runs <= 4;
+const inningCanEnd = (initialOuts, initialBaserunners, runsScored) => {
+  return initialBaserunners.length + 1 - runsScored >= 3 - initialOuts;
+};
+
+const validRunsScoredPerPlay = runsScored => {
+  return typeof runsScored === "number" && runsScored >= 0 && runsScored <= 4;
 };
 
 const validIntialOuts = intitalOuts => {
@@ -40,7 +61,5 @@ const validBaserunners = baserunners => {
 
   return valid && unique;
 };
-
-// there are 24 possible valid plays -- everything else is invalid
 
 module.exports = validatePlay;
